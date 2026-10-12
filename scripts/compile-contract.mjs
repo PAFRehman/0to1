@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import solc from 'solc';
+const root=process.cwd();
+const input={language:'Solidity',sources:{'PenguMint.sol':{content:fs.readFileSync(path.join(root,'contracts/PenguMint.sol'),'utf8')}},settings:{optimizer:{enabled:true,runs:200},evmVersion:'cancun',outputSelection:{'*':{'*':['abi','evm.bytecode.object','evm.deployedBytecode.object']}}}};
+const output=JSON.parse(solc.compile(JSON.stringify(input),{import:p=>{try{return {contents:fs.readFileSync(path.join(root,'node_modules',p),'utf8')}}catch{return {error:'Import not found: '+p}}}}));
+for(const e of output.errors??[])console.error(e.formattedMessage);
+if(output.errors?.some(e=>e.severity==='error'))process.exit(1);
+const c=output.contracts['PenguMint.sol'].PenguMint;
+fs.mkdirSync('lib/mint',{recursive:true});
+fs.writeFileSync('lib/mint/contract.json',JSON.stringify({compiler:solc.version(),abi:c.abi,bytecode:'0x'+c.evm.bytecode.object,deployedBytecode:'0x'+c.evm.deployedBytecode.object},null,2)+'\n');
+console.log('Compiled PenguMint:',c.evm.deployedBytecode.object.length/2,'runtime bytes');

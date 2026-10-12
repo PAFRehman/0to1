@@ -1,0 +1,4 @@
+import {NextResponse} from 'next/server'
+import {resolveContract,verifyContract,serverClient,abi,errorText} from '@/lib/mint/server'
+export const dynamic='force-dynamic'
+export async function GET(request:Request){try{const address=resolveContract(request),id=new URL(request.url).searchParams.get('id')||'';if(!address||!/^\d{1,20}$/.test(id)||BigInt(id)<1n)return NextResponse.json({error:'Invalid creation link.'},{status:400});await verifyContract(address);const c=serverClient(),[item,owner]=await Promise.all([c.readContract({address,abi,functionName:'getCreation',args:[BigInt(id)]}),c.readContract({address,abi,functionName:'ownerOf',args:[BigInt(id)]})]);const r=item as Record<string,unknown>;return NextResponse.json({item:{...r,tokenId:String(r.tokenId),mintedAt:Number(r.mintedAt),previousId:String(r.previousId),witnessCount:Number(r.witnessCount)},owner},{headers:{'Cache-Control':'no-store'}})}catch(e){return NextResponse.json({error:errorText(e)},{status:503})}}

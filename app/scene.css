@@ -1,0 +1,17 @@
+.living-world{position:absolute;inset:0;z-index:0;overflow:hidden}
+.living-scenery{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;transition:opacity .45s ease}
+.living-scenery[data-ready=true]{opacity:1}
+.scenery-poster{position:absolute;inset:0;display:block;pointer-events:none}.scenery-poster img{width:100%;height:100%;object-fit:cover}
+.living-world canvas{width:100%;height:100%;display:block;position:absolute;inset:0;touch-action:none;opacity:0;transition:opacity 1.8s ease}
+.living-world[data-renderer=ready] canvas{opacity:1}
+.world-poster,.world-fallback{position:absolute;inset:0;display:block;background:#20343e}
+.world-poster img,.world-fallback img{width:100%;height:100%;object-fit:cover}
+.world-loading{position:absolute;left:50%;bottom:9%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:#fff9eb;font-size:10px;letter-spacing:.035em;z-index:2;text-shadow:0 1px 5px #10252b}
+.load-line{display:block;width:120px;height:1px;background:#fff6}.load-line i{height:100%;display:block;background:#fff;transform-origin:left;transition:transform .6s ease}
+.pengu-speech{position:absolute;transform:translate(-50%,calc(-100% - 15px));z-index:2;pointer-events:none;width:max-content;max-width:185px;background:#fffaf1ed;color:#385167;border:1px solid #fff9;border-radius:14px;padding:9px 13px;box-shadow:0 4px 20px #182d3920;font-size:10px;line-height:1.5;text-align:center}
+.pengu-speech::after{content:'';position:absolute;left:48%;top:calc(100% - 1px);width:8px;height:8px;background:#fffaf1;transform:rotate(45deg);border-radius:1px}
+.pengu-speech span{display:block;animation:words-arrive .45s ease both}
+.pengu-girl-mark{position:absolute;transform:translate(-50%,calc(-100% - 16px));z-index:2;color:#fffaf1;font-size:22px;line-height:1;text-shadow:0 2px 9px #22394880;pointer-events:none}
+.living-world:has(.pengu-speech[data-scene=listen]) .pengu-girl-mark{font-size:10px}
+.living-world:has(.pengu-speech[data-scene=kiss]) .pengu-speech,.living-world:has(.pengu-speech[data-scene=jet]) .pengu-speech,.living-world:has(.pengu-speech[data-scene=kiss]) .pengu-girl-mark,.living-world:has(.pengu-speech[data-scene=jet]) .pengu-girl-mark{opacity:0}
+
